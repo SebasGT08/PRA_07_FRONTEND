@@ -55,9 +55,9 @@ export class HomeComponent implements OnInit {
 
   // Lista de presidentes
   presidents = [
-    { id: '1', name: 'Donald Trump', image: 'Trump.webp' },
-    { id: '2', name: 'Nayib Bukele', image: 'Bukele.jpg' },
-    { id: '3', name: 'Javier Milei', image: 'Milei.jpg' }
+    { id: 'Trump', name: 'Donald Trump', image: 'Trump.webp' },
+    { id: 'Bukele', name: 'Nayib Bukele', image: 'Bukele.jpg' },
+    { id: 'Milei', name: 'Javier Milei', image: 'Milei.jpg' }
   ];
 
   // Configuración de gráficos
