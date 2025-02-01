@@ -1,0 +1,116 @@
+<mat-toolbar color="primary">
+    <span>Comentarios del Presidente</span>
+</mat-toolbar>
+
+<!-- Selector visual de presidentes -->
+<div class="president-selector">
+    <mat-card *ngFor="let president of presidents" [ngClass]="{'selected': selectedPresident == president.id}"
+              (click)="onPresidentChange(president.id)" class="president-card">
+        <img [src]="president.image" [alt]="president.name" class="president-image">
+        <span class="president-name">{{ president.name }}</span>
+    </mat-card>
+</div>
+
+<div class="container">
+    <!-- Formulario de parámetros -->
+    <mat-card class="card form-card">
+        <mat-card-title>Configurar Análisis</mat-card-title>
+        <mat-card-content>
+            <!-- Selección de tema -->
+            <mat-form-field appearance="fill" class="form-field">
+                <mat-label>Tema</mat-label>
+                <input matInput [(ngModel)]="selectedTopic" name="topic" placeholder="Ingresa el tema">
+            </mat-form-field>
+
+            <!-- Selección de red social (no se usa mat-form-field aquí) -->
+            <div class="form-field">
+                <label class="radio-group-label">Red Social</label>
+                <mat-radio-group [(ngModel)]="selectedSocialMedia" name="socialMedia" class="radio-group">
+                    <mat-radio-button *ngFor="let option of socialMediaOptions" [value]="option">
+                        {{ option }}
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <!-- Número máximo de comentarios -->
+            <mat-form-field appearance="fill" class="form-field">
+                <mat-label>Número de Comentarios</mat-label>
+                <input matInput type="number" [(ngModel)]="maxComments" name="maxComments" placeholder="Ingresa el número de comentarios">
+            </mat-form-field>
+
+            <!-- Botón para ejecutar el análisis -->
+            <button mat-raised-button color="primary" (click)="executeAnalysis()" [disabled]="!canExecuteAnalysis()">
+                Ejecutar Análisis
+            </button>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Progreso del análisis -->
+    <div *ngIf="loadingStatus" class="loading-indicator">
+        <mat-card>
+            <mat-card-content>
+                <p>{{ loadingStatus }}</p>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <!-- Comentarios y gráfico -->
+    <div class="content-row" *ngIf="comments.length > 0">
+        <!-- Tabla de comentarios (70% del ancho) -->
+        <mat-card class="card comments-card">
+            <mat-card-title>Comentarios Recientes</mat-card-title>
+            <mat-card-content>
+                <mat-table [dataSource]="comments" class="comment-table">
+                    <!-- Columna de Sentimiento -->
+                    <ng-container matColumnDef="sentiment">
+                        <mat-header-cell *matHeaderCellDef> Sentimiento </mat-header-cell>
+                        <mat-cell *matCellDef="let comment">
+                            <mat-icon
+                                [ngClass]="{'positive': comment.sentimiento === 'positivo', 'negative': comment.sentimiento === 'negativo'}">
+                                {{ comment.sentimiento === 'positivo' ? 'thumb_up' : 'thumb_down' }}
+                            </mat-icon>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Columna de Comentario -->
+                    <ng-container matColumnDef="text">
+                        <mat-header-cell *matHeaderCellDef> Comentario </mat-header-cell>
+                        <mat-cell *matCellDef="let comment"> {{ comment.comentario }} </mat-cell>
+                    </ng-container>
+
+                    <!-- Header y Row -->
+                    <mat-header-row *matHeaderRowDef="['sentiment', 'text']"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: ['sentiment', 'text'];"></mat-row>
+                </mat-table>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Gráfico (30% del ancho) -->
+        <mat-card class="card chart-card">
+            <mat-card-title>Sentimiento de los Comentarios</mat-card-title>
+            <mat-card-content>
+                <div class="chart-container">
+                    <canvas baseChart [data]="chartData" [options]="chartOptions" type="doughnut"></canvas>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <!-- Palabras más repetidas -->
+    <mat-card class="card full-width" *ngIf="comments.length > 0">
+        <mat-card-title>Palabras Más Repetidas</mat-card-title>
+        <mat-card-content>
+            <!-- Lista de palabras más repetidas en chips -->
+            <mat-chip-listbox>
+                <mat-chip *ngFor="let word of mostFrequentWords" color="accent" selected>
+                    {{ word.word }} ({{ word.count }})
+                </mat-chip>
+            </mat-chip-listbox>
+
+            <!-- Gráfico de palabras más repetidas -->
+            <div class="chart-container">
+                <canvas baseChart [data]="wordChartData" [options]="wordChartOptions" type="bar"></canvas>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

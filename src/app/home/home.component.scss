@@ -1,0 +1,107 @@
+/* Estilos generales */
+.spacer {
+  flex: 1 1 auto;
+}
+
+.container {
+  padding: 16px;
+}
+
+.card {
+  margin: 8px;
+  padding: 16px;
+}
+
+/* Selector visual de presidentes */
+.president-selector {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px;
+  background-color: #f5f5f5;
+}
+
+.president-card {
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, background-color 0.2s;
+  text-align: center;
+  border: 2px solid transparent; /* Borde transparente por defecto */
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+}
+
+.president-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.president-card.selected {
+  border: 4px solid #4d40ff; /* Borde grueso y color secondary */
+  background-color: #ffffff; /* Fondo rosado claro para resaltar */
+  transform: scale(1.1); /* Escalado para hacerla más grande */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */
+}
+
+.president-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 8px;
+}
+
+.president-name {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Distribución del contenido */
+.content-row {
+  display: flex;
+  gap: 16px;
+}
+
+/* Tabla de comentarios (70% del ancho) */
+.comments-card {
+  flex: 7; /* 70% del ancho */
+}
+
+/* Gráfico (30% del ancho) */
+.chart-card {
+  flex: 3; /* 30% del ancho */
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* Tabla de comentarios */
+.comment-table {
+  width: 100%;
+  overflow-x: auto; /* Para manejar tablas muy anchas */
+}
+
+/* Gráfico */
+.chart-container {
+  width: 100%;
+  height: 300px;
+  position: relative;
+}
+
+/* Ajustes adicionales para el gráfico */
+canvas {
+  max-width: 100%;
+  height: auto !important;
+}
+
+/* Colores para sentimientos */
+.positive {
+  color: green;
+}
+
+.negative {
+  color: red;
+}

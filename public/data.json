@@ -1,0 +1,39 @@
+{
+    "comments": [
+        {
+            "id": 1,
+            "text": "El presidente está haciendo un buen trabajo.",
+            "sentiment": "positive"
+        },
+        {
+            "id": 2,
+            "text": "No estoy de acuerdo con las últimas decisiones .",
+            "sentiment": "negative"
+        },
+        {
+            "id": 3,
+            "text": "Excelente gestión en la economía.",
+            "sentiment": "positive"
+        },
+        {
+            "id": 4,
+            "text": "La corrupción sigue siendo un problema.",
+            "sentiment": "negative"
+        },
+        {
+            "id": 5,
+            "text": "Buen manejo de la pandemia.",
+            "sentiment": "positive"
+        },
+        {
+            "id": 6,
+            "text": "Gobierno lleno de corrupción .",
+            "sentiment": "negative"
+        },
+        {
+            "id": 7,
+            "text": "Siempre con las mejores decisiones .",
+            "sentiment": "positive"
+        }
+    ]
+}
