@@ -10,22 +10,70 @@
 .card {
   margin: 8px;
   padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+}
+
+/* Sección de configuración */
+.config-section {
+  background-color: #ffffff;
+}
+
+.config-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.config-item {
+  flex: 1;
+  text-align: center;
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.config-item h3 {
+  margin-bottom: 12px;
+  font-size: 22px;
+  color: #333;
+}
+
+/* Header row para ícono y texto */
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 30px;           /* Espacio entre el ícono y el texto */
+  width: 100%;
+  justify-content: center; /* Centramos el contenido horizontalmente */
+  margin-bottom: 8px;
 }
 
 /* Selector visual de presidentes */
+.president-config {
+  flex: 1;
+  text-align: center;
+}
+
 .president-selector {
   display: flex;
   justify-content: center;
   gap: 16px;
   padding: 16px;
-  background-color: #f5f5f5;
 }
 
 .president-card {
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, background-color 0.2s;
   text-align: center;
-  border: 2px solid transparent; /* Borde transparente por defecto */
+  border: 2px solid transparent;
   border-radius: 8px;
   overflow: hidden;
   background-color: white;
@@ -37,61 +85,107 @@
 }
 
 .president-card.selected {
-  border: 4px solid #4d40ff; /* Borde grueso y color secondary */
-  background-color: #ffffff; /* Fondo rosado claro para resaltar */
-  transform: scale(1.1); /* Escalado para hacerla más grande */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */
+  border: 4px solid #4d40ff;
+  background-color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
+/* Imagen del presidente en formato rectangular */
 .president-image {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  /* Se elimina el border-radius para mantener la forma rectangular */
   object-fit: cover;
   margin-bottom: 8px;
 }
 
 .president-name {
   display: block;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   color: #333;
 }
 
-/* Distribución del contenido */
+/* Formulario de parámetros */
+.form-field {
+  width: 100%;
+}
+
+.radio-group.horizontal {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.social-media-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.social-media-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.social-media-label {
+  font-size: 14px;
+}
+
+/* Botón de ejecutar análisis */
+button[mat-raised-button] {
+  width: 100%;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Progreso del análisis */
+.loading-indicator {
+  margin-top: 16px;
+}
+
+/* Tabla de comentarios */
+.comments-card {
+  width: 100%;
+}
+
+.comment-table {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.mat-column-text {
+  flex: 0 0 80%;
+}
+
+.mat-column-sentiment {
+  flex: 0 0 20%;
+}
+
+/* Gráficos */
 .content-row {
   display: flex;
   gap: 16px;
 }
 
-/* Tabla de comentarios (70% del ancho) */
-.comments-card {
-  flex: 7; /* 70% del ancho */
-}
-
-/* Gráfico (30% del ancho) */
-.chart-card {
-  flex: 3; /* 30% del ancho */
-}
-
 .full-width {
-  width: 100%;
+  flex: 7;
 }
 
-/* Tabla de comentarios */
-.comment-table {
-  width: 100%;
-  overflow-x: auto; /* Para manejar tablas muy anchas */
+.chart-card {
+  flex: 3;
 }
 
-/* Gráfico */
 .chart-container {
   width: 100%;
   height: 300px;
   position: relative;
 }
 
-/* Ajustes adicionales para el gráfico */
 canvas {
   max-width: 100%;
   height: auto !important;
@@ -104,4 +198,59 @@ canvas {
 
 .negative {
   color: red;
+}
+
+.neutral {
+  color: blue;
+}
+
+/* Estilos para la sección de redes sociales */
+.social-media-selector {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px;
+}
+
+/* Tarjeta para redes sociales */
+.social-media-card {
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, background-color 0.2s;
+  text-align: center;
+  border: 2px solid transparent;
+  border-radius: 50%;  /* Mantiene la forma circular para redes sociales */
+  overflow: hidden;
+  background-color: transparent;
+  padding: 4px;
+}
+
+.social-media-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.social-media-card.selected {
+  border: 4px solid #ff4040;
+  transform: scale(1.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Imagen para redes sociales */
+.social-media-icon {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+.loading-indicator {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+mat-progress-bar {
+  margin-bottom: 8px;
 }

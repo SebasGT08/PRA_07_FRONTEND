@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressBarModule } from '@angular/material/progress-bar'; // Importa el módulo
 
 @Component({
   standalone: true,
@@ -36,7 +37,8 @@ import { MatButtonModule } from '@angular/material/button';
     FormsModule,
     MatRadioModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatProgressBarModule  // Agrégalo a los imports
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
@@ -45,22 +47,34 @@ export class HomeComponent implements OnInit {
   comments: any[] = [];
   positiveCount: number = 0;
   negativeCount: number = 0;
+  neutralCount: number = 0;
+  naCount: number = 0;
   wordFrequency: { [key: string]: number } = {};
   selectedPresident: string | null = null;
   selectedTopic: string = '';
   selectedSocialMedia: string = '';
   maxComments: number = 10;
   loadingStatus: string = '';
-  socialMediaOptions: string[] = ['Youtube', 'Reddit', 'X'];
+  
+  // Variable para controlar el estado del análisis
+  isAnalyzing: boolean = false;
 
-  // Lista de presidentes
+  socialMediaOptions = [
+    { id: 'Youtube', name: 'YouTube', icon: 'youtube.png' },
+    { id: 'Reddit', name: 'Reddit', icon: 'reddit.png' },
+    { id: 'X', name: 'X', icon: 'x.png' }
+  ];
+
+  onSocialMediaChange(socialMediaId: string): void {
+    this.selectedSocialMedia = socialMediaId;
+  }
+
   presidents = [
     { id: 'Trump', name: 'Donald Trump', image: 'Trump.webp' },
     { id: 'Bukele', name: 'Nayib Bukele', image: 'Bukele.jpg' },
     { id: 'Milei', name: 'Javier Milei', image: 'Milei.jpg' }
   ];
 
-  // Configuración de gráficos
   chartData: ChartConfiguration<'doughnut'>['data'] = {
     labels: ['Positivos', 'Negativos'],
     datasets: [
@@ -108,17 +122,18 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  // Método para iniciar el análisis
   executeAnalysis(): void {
+    this.comments=[];
     this.loadingStatus = 'Iniciando análisis...';
-    console.log('Ejecutando análisis...');  // Log
-  
+    this.isAnalyzing = true; // Inicia el estado de análisis
+    console.log('Ejecutando análisis...');
+
     this.commentsService.analyzeComments(this.selectedPresident!, this.selectedTopic, this.selectedSocialMedia, this.maxComments)
       .subscribe({
         next: (data) => {
-          console.log('Datos recibidos en el componente:', data);  // Log
+          console.log('Datos recibidos en el componente:', data);
           this.loadingStatus = data.status;
-  
+
           if (data.status === 'Completado') {
             this.comments = data.data;
             this.calculateSentiment();
@@ -126,23 +141,22 @@ export class HomeComponent implements OnInit {
             this.updateChartData();
             this.updateWordChartData();
             this.loadingStatus = 'Análisis completado.';
-            console.log('Análisis completado en el componente.');  // Log
+            console.log('Análisis completado en el componente.');
+            this.isAnalyzing = false; // Finaliza el estado de análisis
           }
         },
         error: (err) => {
-          this.loadingStatus = 'Error en el análisis. Intenta nuevamente.';
-          console.error('Error en el análisis:', err);  // Log
+          this.loadingStatus = 'Error en el análisis. Verifique la conexión con el servidor.';
+          console.error('Error en el análisis:', err);
+          this.isAnalyzing = false; // Finaliza el estado en caso de error
         }
       });
   }
-  
 
-  // Verifica si el formulario es válido para ejecutar el análisis
   canExecuteAnalysis(): boolean {
     return !!this.selectedPresident && !!this.selectedTopic && !!this.selectedSocialMedia && this.maxComments > 0;
   }
 
-  // Método para manejar el cambio de presidente
   onPresidentChange(presidentId: string | null): void {
     this.selectedPresident = presidentId;
   }
@@ -150,19 +164,37 @@ export class HomeComponent implements OnInit {
   calculateSentiment(): void {
     this.positiveCount = this.comments.filter(comment => comment.sentimiento === 'positivo').length;
     this.negativeCount = this.comments.filter(comment => comment.sentimiento === 'negativo').length;
+    this.neutralCount = this.comments.filter(comment => comment.sentimiento === 'neutral').length;
+    this.naCount = this.comments.filter(comment => comment.sentimiento != 'neutral' && comment.sentimiento != 'negativo' && comment.sentimiento != 'positivo').length;
+    
   }
 
   calculateWordFrequency(): void {
-    this.wordFrequency = this.comments.reduce((acc: any, comment: any) => {
-      const words = comment.comentario.split(' ');
-      words.forEach((word: string) => {
-        if (word.length > 3) {
-          acc[word] = (acc[word] || 0) + 1;
+    // Construimos un arreglo con las palabras (en minúsculas) que corresponden al nombre del presidente
+    let excludeTokens: string[] = [];
+    if (this.selectedPresident) {
+      const president = this.presidents.find(p => p.id === this.selectedPresident);
+      if (president) {
+        // Se separa el nombre completo en palabras y se convierten a minúsculas para una comparación consistente
+        excludeTokens = president.name.split(' ').map(token => token.toLowerCase());
+      }
+    }
+  
+    // Recorremos los comentarios y contamos la frecuencia de cada token, excluyendo los tokens filtrados
+    this.wordFrequency = this.comments.reduce((acc: { [key: string]: number }, comment: any) => {
+      // Se asume que cada comentario tiene la propiedad "tokens" que ya es un arreglo de palabras
+      const tokens: string[] = comment.tokens;
+      tokens.forEach((token: string) => {
+        const lowerToken = token.toLowerCase();
+        // Se considera solo tokens con más de 3 caracteres y que no formen parte del nombre del presidente
+        if (lowerToken.length > 3 && !excludeTokens.includes(lowerToken)) {
+          acc[lowerToken] = (acc[lowerToken] || 0) + 1;
         }
       });
       return acc;
     }, {});
   }
+  
 
   get mostFrequentWords(): { word: string, count: number }[] {
     return Object.entries(this.wordFrequency)
@@ -186,11 +218,11 @@ export class HomeComponent implements OnInit {
 
   updateChartData(): void {
     this.chartData = {
-      labels: ['Positivos', 'Negativos'],
+      labels: ['Positivos', 'Negativos','Neutrales','No analizados'],
       datasets: [
         {
-          data: [this.positiveCount, this.negativeCount],
-          backgroundColor: ['#4CAF50', '#FF0000']
+          data: [this.positiveCount, this.negativeCount, this.neutralCount, this.naCount],
+          backgroundColor: ['#4CAF50', '#FF0000', '#1034d0', '#9d9d9d']
         }
       ]
     };
