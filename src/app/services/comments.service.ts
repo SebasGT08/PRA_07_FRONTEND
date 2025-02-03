@@ -9,13 +9,14 @@ export class CommentsService {
 
   constructor(private http: HttpClient,) {}
 
-  analyzeComments(presidente: string, tema: string, red_social: string, max_comments: number): Observable<any> {
+  analyzeComments(presidente: string, tema: string, red_social: string, max_comments: number, model: string,): Observable<any> {
     const url = 'http://127.0.0.1:5000/analyze';
     const body = JSON.stringify({
       presidente: presidente,
       tema: tema,
       red_social: red_social,
-      max_comments: max_comments
+      max_comments: max_comments,
+      model: model
     });
   
     return new Observable(observer => {

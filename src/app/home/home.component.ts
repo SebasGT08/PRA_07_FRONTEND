@@ -63,6 +63,16 @@ export class HomeComponent implements OnInit {
   // Variable para controlar el estado del análisis
   isAnalyzing: boolean = false;
 
+  // Nueva propiedad para el modelo seleccionado
+  selectedModel: string = '';
+
+  // Opciones de modelos a elegir
+  modelOptions = [
+    { id: 'deepseek-r1:1.5b', name: 'DeepSeek R1 con 1.5 billones de parámetros' },
+    { id: 'deepseek-r1:7b', name: 'DeepSeek R1 con 7 billones de parámetros' },
+    { id: 'deepseek-r1:8b', name: 'DeepSeek R1 con 8 billones de parámetros' }
+  ];
+
   socialMediaOptions = [
     { id: 'Youtube', name: 'YouTube', icon: 'youtube.png' },
     { id: 'Reddit', name: 'Reddit', icon: 'reddit.png' },
@@ -138,7 +148,8 @@ export class HomeComponent implements OnInit {
   // Ahora se valida que, si se selecciona "Otro", se haya ingresado un nombre
   canExecuteAnalysis(): boolean {
     const presidentProvided = this.selectedPresident === 'Otro' ? !!this.customPresidentName : !!this.selectedPresident;
-    return presidentProvided && !!this.selectedTopic && !!this.selectedSocialMedia && this.maxComments > 0;
+    // Se requiere que además se seleccione un modelo (selectedModel)
+    return presidentProvided && !!this.selectedTopic && !!this.selectedSocialMedia && !!this.selectedModel && this.maxComments > 0;
   }
 
   executeAnalysis(): void {
@@ -150,7 +161,7 @@ export class HomeComponent implements OnInit {
     // Si se seleccionó "Otro", se utiliza el nombre personalizado
     const presidentName = this.selectedPresident === 'Otro' ? this.customPresidentName : this.selectedPresident;
 
-    this.commentsService.analyzeComments(presidentName!, this.selectedTopic, this.selectedSocialMedia, this.maxComments)
+    this.commentsService.analyzeComments(presidentName!, this.selectedTopic, this.selectedSocialMedia, this.maxComments, this.selectedModel)
       .subscribe({
         next: (data) => {
           console.log('Datos recibidos en el componente:', data);

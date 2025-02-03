@@ -1,176 +1,195 @@
 <mat-toolbar color="primary">
     <span>Análisis de Aceptación de Presidentes</span>
-  </mat-toolbar>
-  
-  <div class="container">
-  
+</mat-toolbar>
+
+<div class="container">
+
     <!-- Sección de configuración -->
     <mat-card class="card config-section">
-      <!-- Selector visual de presidentes -->
-      <div class="config-row">
-        <div class="config-item president-config">
-          <div class="header-row">
-            <div class="config-icon">
-              <mat-icon>person</mat-icon>
+        <!-- Selector visual de presidentes -->
+        <div class="config-row">
+            <div class="config-item president-config">
+                <div class="header-row">
+                    <div class="config-icon">
+                        <mat-icon>person</mat-icon>
+                    </div>
+                    <h3>Presidente</h3>
+                </div>
+                <div class="president-selector">
+                    <!-- Tarjetas para presidentes predefinidos -->
+                    <mat-card *ngFor="let president of presidents"
+                        [ngClass]="{'selected': selectedPresident === president.id}"
+                        (click)="onPresidentChange(president.id)" class="president-card">
+                        <img [src]="president.image" [alt]="president.name" class="president-image">
+                        <span class="president-name">{{ president.name }}</span>
+                    </mat-card>
+
+                    <!-- Tarjeta para la opción "Otro" -->
+                    <mat-card [ngClass]="{'selected': selectedPresident === 'Otro'}" (click)="onPresidentChange('Otro')"
+                        class="president-card">
+                        <!-- Puedes usar una imagen por defecto o un icono -->
+                        <img src="otro.png" alt="Otro" class="president-image">
+                        <span class="president-name">Otro</span>
+                    </mat-card>
+                </div>
+
+                <!-- Campo para ingresar el nombre si se selecciona "Otro" -->
+                <div *ngIf="selectedPresident === 'Otro'" class="custom-president-input">
+                    <mat-form-field appearance="fill" class="form-field">
+                        <input matInput [(ngModel)]="customPresidentName"
+                            placeholder="Ingresa el nombre del presidente">
+                    </mat-form-field>
+                </div>
             </div>
-            <h3>Presidente</h3>
-          </div>
-          <div class="president-selector">
-            <!-- Tarjetas para presidentes predefinidos -->
-            <mat-card *ngFor="let president of presidents"
-                [ngClass]="{'selected': selectedPresident === president.id}"
-                (click)="onPresidentChange(president.id)" class="president-card">
-              <img [src]="president.image" [alt]="president.name" class="president-image">
-              <span class="president-name">{{ president.name }}</span>
-            </mat-card>
-  
-            <!-- Tarjeta para la opción "Otro" -->
-            <mat-card [ngClass]="{'selected': selectedPresident === 'Otro'}"
-                (click)="onPresidentChange('Otro')" class="president-card">
-              <!-- Puedes usar una imagen por defecto o un icono -->
-              <img src="otro.png" alt="Otro" class="president-image">
-              <span class="president-name">Otro</span>
-            </mat-card>
-          </div>
-  
-          <!-- Campo para ingresar el nombre si se selecciona "Otro" -->
-          <div *ngIf="selectedPresident === 'Otro'" class="custom-president-input">
-            <mat-form-field appearance="fill" class="form-field">
-              <input matInput [(ngModel)]="customPresidentName" placeholder="Ingresa el nombre del presidente">
-            </mat-form-field>
-          </div>
         </div>
-      </div>
-  
-      <!-- Resto de configuraciones -->
-      <div class="config-row">
-        <!-- Selección de tema -->
-        <div class="config-item">
-          <div class="header-row">
-            <div class="config-icon">
-              <mat-icon>topic</mat-icon>
+
+        <!-- Resto de configuraciones -->
+        <div class="config-row">
+            <!-- Selección de tema -->
+            <div class="config-item">
+                <div class="header-row">
+                    <div class="config-icon">
+                        <mat-icon>topic</mat-icon>
+                    </div>
+                    <h3>Tema</h3>
+                </div>
+                <mat-form-field appearance="fill" class="form-field">
+                    <input matInput [(ngModel)]="selectedTopic" name="topic" placeholder="Ingresa el tema">
+                </mat-form-field>
             </div>
-            <h3>Tema</h3>
-          </div>
-          <mat-form-field appearance="fill" class="form-field">
-            <input matInput [(ngModel)]="selectedTopic" name="topic" placeholder="Ingresa el tema">
-          </mat-form-field>
-        </div>
-  
-        <!-- Selección de red social -->
-        <div class="config-item">
-          <div class="header-row">
-            <div class="config-icon">
-              <mat-icon>share</mat-icon>
+
+            <!-- Selección de red social -->
+            <div class="config-item">
+                <div class="header-row">
+                    <div class="config-icon">
+                        <mat-icon>share</mat-icon>
+                    </div>
+                    <h3>Red Social</h3>
+                </div>
+                <div class="social-media-selector">
+                    <mat-card *ngFor="let socialMedia of socialMediaOptions"
+                        [ngClass]="{'selected': selectedSocialMedia === socialMedia.id}"
+                        (click)="onSocialMediaChange(socialMedia.id)" class="social-media-card">
+                        <img [src]="socialMedia.icon" [alt]="socialMedia.name" class="social-media-icon">
+                    </mat-card>
+                </div>
             </div>
-            <h3>Red Social</h3>
-          </div>
-          <div class="social-media-selector">
-            <mat-card *ngFor="let socialMedia of socialMediaOptions"
-                [ngClass]="{'selected': selectedSocialMedia === socialMedia.id}"
-                (click)="onSocialMediaChange(socialMedia.id)" class="social-media-card">
-              <img [src]="socialMedia.icon" [alt]="socialMedia.name" class="social-media-icon">
-            </mat-card>
-          </div>
-        </div>
-  
-        <!-- Número máximo de comentarios -->
-        <div class="config-item">
-          <div class="header-row">
-            <div class="config-icon">
-              <mat-icon>comment</mat-icon>
+
+            <!-- Número máximo de comentarios -->
+            <div class="config-item">
+                <div class="header-row">
+                    <div class="config-icon">
+                        <mat-icon>comment</mat-icon>
+                    </div>
+                    <h3>Número de Comentarios</h3>
+                </div>
+                <mat-form-field appearance="fill" class="form-field">
+                    <input matInput type="number" [(ngModel)]="maxComments" name="maxComments"
+                        placeholder="Ingresa el número">
+                </mat-form-field>
             </div>
-            <h3>Número de Comentarios</h3>
-          </div>
-          <mat-form-field appearance="fill" class="form-field">
-            <input matInput type="number" [(ngModel)]="maxComments" name="maxComments"
-                placeholder="Ingresa el número">
-          </mat-form-field>
         </div>
-      </div>
-  
-      <!-- Botón para ejecutar el análisis -->
-      <div class="config-row">
-        <button mat-raised-button color="primary" (click)="executeAnalysis()"
-            [disabled]="!canExecuteAnalysis() || isAnalyzing">
-          <mat-icon>play_arrow</mat-icon>
-          Ejecutar Análisis
-        </button>
-      </div>
+
+        <!-- Selección de Modelo -->
+        <div class="config-row">
+            <div class="config-item">
+                <div class="header-row">
+                    <div class="config-icon">
+                        <mat-icon>memory</mat-icon>
+                    </div>
+                    <h3>Modelo</h3>
+                </div>
+                <mat-form-field appearance="fill" class="model-select">
+                    <mat-select [(ngModel)]="selectedModel" placeholder="Selecciona un modelo">
+                        <mat-option *ngFor="let model of modelOptions" [value]="model.id">
+                            {{ model.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <!-- Botón para ejecutar el análisis -->
+        <div class="config-row">
+            <button mat-raised-button color="primary" (click)="executeAnalysis()"
+                [disabled]="!canExecuteAnalysis() || isAnalyzing">
+                <mat-icon>play_arrow</mat-icon>
+                Ejecutar Análisis
+            </button>
+        </div>
     </mat-card>
-  
+
     <!-- Progreso del análisis -->
     <div *ngIf="isAnalyzing" class="loading-indicator">
-      <mat-card>
-        <mat-card-content>
-          <p>{{ loadingStatus }}</p>
-        </mat-card-content>
-      </mat-card>
-      <!-- Barra de progreso animada -->
-      <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+        <mat-card>
+            <mat-card-content>
+                <p>{{ loadingStatus }}</p>
+            </mat-card-content>
+        </mat-card>
+        <!-- Barra de progreso animada -->
+        <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
     </div>
-  
+
     <!-- Comentarios y gráficos (resto del HTML) -->
     <div *ngIf="comments.length > 0">
-      <!-- Tabla de comentarios -->
-      <mat-card class="card comments-card">
-        <mat-card-title>Comentarios Recientes</mat-card-title>
-        <mat-card-content>
-          <mat-table [dataSource]="comments" class="comment-table">
-            <!-- Columna de Comentario -->
-            <ng-container matColumnDef="text">
-              <mat-header-cell *matHeaderCellDef> Comentario </mat-header-cell>
-              <mat-cell *matCellDef="let comment"> {{ comment.comentario_limpio }} </mat-cell>
-            </ng-container>
-  
-            <!-- Columna de Sentimiento -->
-            <ng-container matColumnDef="sentiment">
-              <mat-header-cell *matHeaderCellDef> Sentimiento </mat-header-cell>
-              <mat-cell *matCellDef="let comment">
-                <ng-container [ngSwitch]="comment.sentimiento">
-                  <mat-icon *ngSwitchCase="'positivo'" class="positive">thumb_up</mat-icon>
-                  <mat-icon *ngSwitchCase="'negativo'" class="negative">thumb_down</mat-icon>
-                  <mat-icon *ngSwitchCase="'neutral'" class="neutral">sentiment_neutral</mat-icon>
-                  <mat-icon *ngSwitchDefault class="no-asignado">help_outline</mat-icon>
-                </ng-container>
-              </mat-cell>
-            </ng-container>
-  
-            <!-- Header y Row -->
-            <mat-header-row *matHeaderRowDef="['text', 'sentiment']"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: ['text', 'sentiment'];"></mat-row>
-          </mat-table>
-        </mat-card-content>
-      </mat-card>
-  
-      <!-- Gráficos -->
-      <div class="content-row">
-        <!-- Gráfico de palabras más repetidas -->
-        <mat-card class="card full-width">
-          <mat-card-title>Palabras Más Repetidas</mat-card-title>
-          <mat-card-content>
-            <mat-chip-listbox>
-              <mat-chip *ngFor="let word of mostFrequentWords" color="accent" selected>
-                {{ word.word }} ({{ word.count }})
-              </mat-chip>
-            </mat-chip-listbox>
-  
-            <div class="chart-container">
-              <canvas baseChart [data]="wordChartData" [options]="wordChartOptions" type="bar"></canvas>
-            </div>
-          </mat-card-content>
+        <!-- Tabla de comentarios -->
+        <mat-card class="card comments-card">
+            <mat-card-title>Comentarios Recientes</mat-card-title>
+            <mat-card-content>
+                <mat-table [dataSource]="comments" class="comment-table">
+                    <!-- Columna de Comentario -->
+                    <ng-container matColumnDef="text">
+                        <mat-header-cell *matHeaderCellDef> Comentario </mat-header-cell>
+                        <mat-cell *matCellDef="let comment"> {{ comment.comentario_limpio }} </mat-cell>
+                    </ng-container>
+
+                    <!-- Columna de Sentimiento -->
+                    <ng-container matColumnDef="sentiment">
+                        <mat-header-cell *matHeaderCellDef> Sentimiento </mat-header-cell>
+                        <mat-cell *matCellDef="let comment">
+                            <ng-container [ngSwitch]="comment.sentimiento">
+                                <mat-icon *ngSwitchCase="'positivo'" class="positive">thumb_up</mat-icon>
+                                <mat-icon *ngSwitchCase="'negativo'" class="negative">thumb_down</mat-icon>
+                                <mat-icon *ngSwitchCase="'neutral'" class="neutral">sentiment_neutral</mat-icon>
+                                <mat-icon *ngSwitchDefault class="no-asignado">help_outline</mat-icon>
+                            </ng-container>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Header y Row -->
+                    <mat-header-row *matHeaderRowDef="['text', 'sentiment']"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: ['text', 'sentiment'];"></mat-row>
+                </mat-table>
+            </mat-card-content>
         </mat-card>
-  
-        <!-- Gráfico de sentimiento -->
-        <mat-card class="card chart-card">
-          <mat-card-title>Sentimiento de los Comentarios</mat-card-title>
-          <mat-card-content>
-            <div class="chart-container">
-              <canvas baseChart [data]="chartData" [options]="chartOptions" type="doughnut"></canvas>
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
+
+        <!-- Gráficos -->
+        <div class="content-row">
+            <!-- Gráfico de palabras más repetidas -->
+            <mat-card class="card full-width">
+                <mat-card-title>Palabras Más Repetidas</mat-card-title>
+                <mat-card-content>
+                    <mat-chip-listbox>
+                        <mat-chip *ngFor="let word of mostFrequentWords" color="accent" selected>
+                            {{ word.word }} ({{ word.count }})
+                        </mat-chip>
+                    </mat-chip-listbox>
+
+                    <div class="chart-container">
+                        <canvas baseChart [data]="wordChartData" [options]="wordChartOptions" type="bar"></canvas>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <!-- Gráfico de sentimiento -->
+            <mat-card class="card chart-card">
+                <mat-card-title>Sentimiento de los Comentarios</mat-card-title>
+                <mat-card-content>
+                    <div class="chart-container">
+                        <canvas baseChart [data]="chartData" [options]="chartOptions" type="doughnut"></canvas>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
     </div>
-  </div>
-  
+</div>
