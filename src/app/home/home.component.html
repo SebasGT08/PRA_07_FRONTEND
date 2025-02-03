@@ -132,36 +132,6 @@
 
     <!-- Comentarios y gráficos (resto del HTML) -->
     <div *ngIf="comments.length > 0">
-        <!-- Tabla de comentarios -->
-        <mat-card class="card comments-card">
-            <mat-card-title>Comentarios Recientes</mat-card-title>
-            <mat-card-content>
-                <mat-table [dataSource]="comments" class="comment-table">
-                    <!-- Columna de Comentario -->
-                    <ng-container matColumnDef="text">
-                        <mat-header-cell *matHeaderCellDef> Comentario </mat-header-cell>
-                        <mat-cell *matCellDef="let comment"> {{ comment.comentario_limpio }} </mat-cell>
-                    </ng-container>
-
-                    <!-- Columna de Sentimiento -->
-                    <ng-container matColumnDef="sentiment">
-                        <mat-header-cell *matHeaderCellDef> Sentimiento </mat-header-cell>
-                        <mat-cell *matCellDef="let comment">
-                            <ng-container [ngSwitch]="comment.sentimiento">
-                                <mat-icon *ngSwitchCase="'positivo'" class="positive">thumb_up</mat-icon>
-                                <mat-icon *ngSwitchCase="'negativo'" class="negative">thumb_down</mat-icon>
-                                <mat-icon *ngSwitchCase="'neutral'" class="neutral">sentiment_neutral</mat-icon>
-                                <mat-icon *ngSwitchDefault class="no-asignado">help_outline</mat-icon>
-                            </ng-container>
-                        </mat-cell>
-                    </ng-container>
-
-                    <!-- Header y Row -->
-                    <mat-header-row *matHeaderRowDef="['text', 'sentiment']"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: ['text', 'sentiment'];"></mat-row>
-                </mat-table>
-            </mat-card-content>
-        </mat-card>
 
         <!-- Gráficos -->
         <div class="content-row">
@@ -191,5 +161,37 @@
                 </mat-card-content>
             </mat-card>
         </div>
+
+
+         <!-- Tabla de comentarios -->
+         <mat-card class="card comments-card">
+            <mat-card-title>Comentarios Recientes</mat-card-title>
+            <mat-card-content>
+                <mat-table [dataSource]="comments" class="comment-table">
+                    <!-- Columna de Comentario -->
+                    <ng-container matColumnDef="text">
+                        <mat-header-cell *matHeaderCellDef> Comentario </mat-header-cell>
+                        <mat-cell *matCellDef="let comment"> {{ comment.comentario_limpio }} </mat-cell>
+                    </ng-container>
+
+                    <!-- Columna de Sentimiento -->
+                    <ng-container matColumnDef="sentiment">
+                        <mat-header-cell *matHeaderCellDef> Sentimiento </mat-header-cell>
+                        <mat-cell *matCellDef="let comment">
+                            <ng-container [ngSwitch]="comment.sentimiento">
+                                <mat-icon *ngSwitchCase="'positivo'" class="positive">thumb_up</mat-icon>
+                                <mat-icon *ngSwitchCase="'negativo'" class="negative">thumb_down</mat-icon>
+                                <mat-icon *ngSwitchCase="'neutral'" class="neutral">sentiment_neutral</mat-icon>
+                                <mat-icon *ngSwitchDefault class="no-asignado">help_outline</mat-icon>
+                            </ng-container>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Header y Row -->
+                    <mat-header-row *matHeaderRowDef="['text', 'sentiment']"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: ['text', 'sentiment'];"></mat-row>
+                </mat-table>
+            </mat-card-content>
+        </mat-card>
     </div>
 </div>
