@@ -70,7 +70,8 @@ export class HomeComponent implements OnInit {
   modelOptions = [
     { id: 'deepseek-r1:1.5b', name: 'DeepSeek R1 con 1.5 billones de parámetros' },
     { id: 'deepseek-r1:7b', name: 'DeepSeek R1 con 7 billones de parámetros' },
-    { id: 'deepseek-r1:8b', name: 'DeepSeek R1 con 8 billones de parámetros' }
+    { id: 'deepseek-r1:8b', name: 'DeepSeek R1 con 8 billones de parámetros' },
+    { id: 'deepseek-r1:14b', name: 'DeepSeek R1 con 14 billones de parámetros' }
   ];
 
   socialMediaOptions = [
